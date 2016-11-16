@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Set Week {{ weekNum }} Pick</title>
+</head>
+<body>
+    <h1 align="center">Make Your Picks for Week {{ weekNum }}</h1>
+    <form action="/pick_made" method="post">
+    <table border="1" align="center">
+        <thead>
+            <tr>
+                <th>Home</th>
+                <th>Away</th>
+                <th>Confidence</th>
+            </tr>
+        </thead>
+        {# Fill the table using a for loop. #}
+        <tbody>
+            {% for game in games %}
+                <tr>
+                    {# games is a list of 2-item tuples, the first is the home team, second is away.
+                     Name the radio buttons based on the loop counter - each number corresponds with
+                     a particular game. #}
+                    <td>{{ game[0] }} <input type="radio" name="{{ loop.index0 }}" value="home"></td>
+                    <td>{{ game[1] }} <input type="radio" name="{{ loop.index0 }}" value="away"></td>
+                    <td>
+                        {# Adds a drop-down list to select the confidence value. #}
+                        {# TODO: Add javascript to remove values that have already been selected. #}
+                        <select name="conf{{ loop.index0 }}">
+                            {# An inner loop to add the correct number of values to the list
+                             (there aren't always 16 games a week). #}
+                            {% for game in games %}
+                                {# loop.index starts at 1, index0 starts at 0. #}
+                                <option value="{{ loop.index }}">{{ loop.index }}</option>
+                            {% endfor %}
+                        </select>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {# Hidden input tags that let me get the week number and list of NFL games back from the form data. #}
+    <input type="hidden" name="weekNum" value="{{ weekNum }}">
+    <input type="hidden" name="games" value="{{ games }}">
+    <input type="submit" value="Submit Picks">
+    </form>
+</body>
+</html>
