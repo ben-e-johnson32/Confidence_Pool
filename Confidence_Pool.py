@@ -8,7 +8,7 @@ app = Flask(__name__)
 
 
 # The page where a user enters their pick for the week.
-@app.route('/')
+@app.route('/make_pick')
 def make_pick():
     # TODO: Figure out scheduling (after a week's games are completed, calculate users' scores and change the week)
     # TODO: Check if the user has already entered picks for the week.
@@ -93,6 +93,27 @@ def read_picks(form_data):
         entry = {k: (p, v)}
         picks2.update(entry)
     return picks2
+
+
+# Display the log-in page.
+@app.route('/login')
+def login():
+    return render_template('login.html')
+
+
+# The landing page after log-in. If the user exists and the password is correct, the log-in is successful.
+# If not, redisplay the log-in page with a message saying the password is wrong or the user doesn't exist.
+# TODO: Implement flask-login.
+@app.route('/login_successful', methods=['POST'])
+def login_successful():
+    r = request.form
+    email = r['email']
+    password = r['password']
+    user = picksdb.GetUser(email, password)
+    if user is not None:
+        return render_template('login_successful.html', user=user)
+    else:
+        return render_template('login.html', failed=True)
 
 
 if __name__ == '__main__':

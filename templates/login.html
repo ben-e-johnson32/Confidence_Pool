@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Log-In</title>
+    {# Button-centering style taken from
+    http://stackoverflow.com/questions/4221263/center-form-submit-buttons-html-css #}
+    <style type="text/css">
+        #centerbutton {width:250px;margin:0 auto;}
+    </style>
+</head>
+<body>
+    {% if failed %}
+        <p align="center">Login failed. Make sure you have an account and the password is correct.</p>
+    {% endif %}
+    <form method="post" action='/login_successful'>
+        <div id="centerbutton">
+            <p align="center">Email: <input type="text" name="email"></p>
+            <p align="center">Password: <input type="password" name="password"></p>
+            <p><input type="submit" style="text-align:center"></p>
+        </div>
+    </form>
+</body>
+</html>
